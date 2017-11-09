@@ -79,14 +79,28 @@ public class Untilites<T> where T : IComparable
 }
 
 //意思为T类型为所有有IComparable接口的类。另外列出所有五种类型的限制：
-//1. 限制占位类为有该接口的类。如 Where T : IComparable(任何借口)
+//1. 限制占位类为有该接口的类。如 Where T : IComparable(任何接口)
 //2. 限制占位类为某一特定类和该类的子类的类。如 Where T : Product(任何指定的类)
 //3. 限制占位类为值类型(Value type)。仅 Where T : struct
 //4. 限制占位类为引用类型(Reference type)。仅 Where T : class
 //5. 限制占位类为有默认构造器的类。仅 Where T : new()
+//详细解释下第五种情况。在有些时候我们需要对占位类T实例化，但是系统并不知道这是个类如何具体实例化，需要传递哪些参数。这个时候如果该占位类有默认构造器
+//那么就可以实例化，所以需要加上此限制new()，有默认构造器的占位类系统才知道怎么将它实例化。接着以上面例子为例:
 
+public class Untilites<T> where T : IComparable, new()
+{
+  public T Max(T a, T b)
+  {
+    return a.CompareTo(b) > 0 ? a : b;
+  }
+  
+  public void Weried(T t)
+  {
+    var obj = new T();
+  }
+}
 
-
+//以上就想到这么多，以后再补充。最后更新2017年11月09日。
 
 
 
