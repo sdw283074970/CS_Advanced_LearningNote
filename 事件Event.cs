@@ -182,9 +182,13 @@ public delegate void VideoEncodedEventHandler()
 var encoder = (Videoencoder)sender;
 
 //但这是不安全方法，并不推荐强制转换。很多情况下强制转换会失败，导致抛出异常，在CS_Intermediate_LearningNote中的类的转换专题中有详细讨论。
-//我们这里使用安全的降级方法，使用关键词cast，如：
+//我们这里使用安全的降级方法，使用关键词as，如：
 
+var encoder = sender as VideoEncoder;
 
+//这样我们就可以直接通过encoder.xxx来直接调用VideoEncoder这个实例中的属性/方法了。
+
+//暂时想到这么多，最后编辑日期2017/11/14
 
 
 
