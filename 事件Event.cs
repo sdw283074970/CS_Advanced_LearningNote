@@ -58,24 +58,13 @@ class VideoEncoder
   }
 }
 
+//以邮件服务为例订阅事件
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+class MailService
+{
+  //订阅事件统一格式，即订阅者“协议”方法中签名与发布者委托签名相同
+  public void OnVideoEncoded (object sender, VideoEventArgs e)
+  {
+    Console.WriteLine("An Email has been sent." + e.video.title);  //订阅者订阅事件后采取的响应
+  }
+}
