@@ -51,6 +51,7 @@ class VideoEncoder
   }
   
   //为了获得订阅者的回应，我们需要先定义一个方法来通知订阅者，然后通过订阅者的执行方法响应事件。这个方法即发布事件。
+    //补充：任何情况下，发布者对订阅者一无所知也无需知道它们的状态。
   protected virtual void OnVideoEncoded()   //发布事件第三步：发布事件
   {
     if (VideoEncoded != null)  //验证是否有订阅者订阅此事件
