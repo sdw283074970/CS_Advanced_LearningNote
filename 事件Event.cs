@@ -73,7 +73,7 @@ class MailService
   }
 }
 
-//现在我们有了事件及其发布者和订阅者，我们需要在Client中，在这里即主函数Main()中将它们连接在一起
+//现在我们有了事件及其发布者和订阅者，我们需要在Client中，在这里即主函数Main()中将它们连接在一起，即签署“协议”：
 
 static void Main(string[] args)
 {
