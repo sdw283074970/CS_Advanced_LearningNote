@@ -89,8 +89,8 @@ static void Main(string[] args)
 }//执行这一段程序的结果为：编码完成后邮件系统被触发并发送邮件，若有新的订阅者直接在这添加，无需更改发布者和其他订阅者的代码
 
 //以上为事件发布 - 订阅体系中的核心内容。
-//小结：定义事件基于委托，即事件类似于委托是一个容纳订阅者方法/函数的列表。直接调用则执行其包含的所有方法。通过在Client中对这个方法列表进行操作
-  //如添加、删除订阅者无需更改发布者或订阅者的代码，即实现了松耦合程序结构设计。
+//小结：定义事件基于委托，即事件类似于委托是一个容纳订阅者方法/函数的列表。直接调用则执行其包含的所有方法，我们只用决定在什么时候调用这一套方法即可。
+  //通过在Client中对这个方法列表进行操作如添加、删除订阅者无需更改发布者或订阅者的代码，即实现了松耦合程序结构设计。
 
 //Q: 前面提到有办法通过EventArgs作为参数装进委托中，让发布者能发送一些额外的信息/数据给订阅者。要如何实现这个功能？
 //A: 在很多情况下不同的事件需要传达不同的参数，可以通过定制事件传达参数(EventArgs)来实现。定制的参数类必须继承自EventArgs。在以上例子中，
@@ -116,7 +116,7 @@ class VideoEncoder
     OnVideoEncoded(video);  //在这里传入video参数给该方法中的VideoEncoded事件使用
   }
   
-  protected virtual void OnVideoEncoded(Video video)   //实例话VideoEventArgs需要一个video实例，在这里传入该参数
+  protected virtual void OnVideoEncoded(Video video)   //实例化VideoEventArgs需要一个video实例，在这里传入video实例作为参数
   {
     if (VideoEncoded != null)
       VideoEncoded(this, new VideoEventArgs() { Video = video });  //传出一个VideoEventArgs实例，数需要传输的据都被封装在这个实例中
