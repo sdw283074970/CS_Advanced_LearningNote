@@ -51,7 +51,7 @@ class VideoEncoder
   }
   
   //为了获得订阅者的回应，我们需要先定义一个方法来通知订阅者，然后通过订阅者的执行方法响应事件。这个方法即发布事件。
-  protected virtual void OnVidepEncoded()   //发布事件第三步：发布事件
+  protected virtual void OnVideoEncoded()   //发布事件第三步：发布事件
   {
     if (VideoEncoded != null)  //验证是否有订阅者订阅此事件
       VideoEncoded(this, EventArgs.Empty);  //像调用方法一样调用事件，即获得订阅者响应。此例中发布者为当前类，暂时不附带发送数据。
@@ -68,3 +68,21 @@ class MailService
     Console.WriteLine("An Email has been sent." + e.video.title);  //订阅者订阅事件后采取的响应
   }
 }
+
+//现在我们有了事件及其发布者和订阅者，我们需要在Client中，在这里即主函数Main()中将它们连接在一起
+
+static void Main(string[] args)
+{
+  var video = new Video();
+  var videoEncoder = new VideoEncoder();  //发布者
+  var mailService = new MailService();    //订阅者
+  
+  videoEncoder.VideoEncoded += mailService.OnVideoEncoded;  //将订阅者添加进事件订阅者列表
+  
+  videoEncoder.Encode(video);  /执行“编码视频文件”这一过程，因为其中包含了“编码完成”事件，该事被MailService订阅，所以在结束后会获得订阅者响应
+}//执行这一段程序的结果为：编码完成后邮件系统被触发并发送邮件
+
+//以上为事件发布 - 订阅体系中的核心内容。
+
+
+
