@@ -137,8 +137,9 @@ class MailService
 //Q: 定义委托/事件有没有简便写法？
 //A: 在.NET framwork 3.0中新加入了一套EventHandler委托类。有两种重载，分别是：
 
-EventHandler //1. 无泛型委托：在不发送额外信息的时候使用
-EventHandler<TEventArgs> //2. 泛型委托：在要发送额外信息给订阅者时使用
+public event EventHandler name;//1. 无泛型委托：在不发送额外信息的时候使用
+  
+public event EventHandler<TEventArgs> name;//2. 泛型委托：在要发送额外信息给订阅者时使用
 
 //改写后的发布者可省去自定义委托这一步骤。此例中药发送额外信息给订阅者，所以试用泛型委托。简化后的发布者如下：
 
@@ -165,11 +166,11 @@ class VideoEncoder
 //Q: 使用自带的事件委托有没有什么限制？什么时候需要自定义委托？
 //A: 有限制。只有一般情况下才能用自带的事件委托简写。一般情况是指订阅者需要知道谁是发布者的情况，即至少必须有传入的第一个参入sender，如：
 
-public delegate void VideoEncodedEventHandler(object sender)
+public delegate void VideoEncodedEventHandler(object sender);
   
 //若我们不用让订阅者知道谁是发布者，即订阅者不用调用发布者属性就能做出回应，我们就不用在委托中传入sender。其实以上的例子中完全可以省略sender，如：
   
-public delegate void VideoEncodedEventHandler()
+public delegate void VideoEncodedEventHandler();
 
 //反之，在需要调用发布者属性才能做出回应的情况下，就需要sender，换句话说就可以使用自带委托简写，是否采用泛型取决于是否需要发送额外信息。
   
@@ -189,15 +190,3 @@ var encoder = sender as VideoEncoder;
 //这样我们就可以直接通过encoder.xxx来直接调用VideoEncoder这个实例中的属性/方法了。
 
 //暂时想到这么多，最后编辑日期2017/11/14
-
-
-
-
-
-
-
-
-
-
-
-
