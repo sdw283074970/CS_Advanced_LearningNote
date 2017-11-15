@@ -1,6 +1,5 @@
 //Q: 什么是LINQ？这是干什么的？
-//A: LINQ指的是System.Colection.Generic.Linq下的所有类、方法。LINQ代表语言级集成查询(Language Integrated Query)，通过调用其中的类、方法让我们
-  //具备查询的能力。
+//A: LINQ指的是System.Linq下的所有类、方法。LINQ代表语言级集成查询(Language Integrated Query)，通过调用其中的类、方法让我们具备查询的能力。
   
 //Q: 我能用LINQ查询什么？
 //A: 按照对象载体类别可以分为四类，分别是：
@@ -27,4 +26,42 @@ static void Main(string[] args)
   foreach (var b in cheapBooks)
     Console.WriteLine(b.Title + " " + book.Price);
 }
+
+//在SQL中以上查询只用一句就能表达，即SELECT * FROM books WHERE price<10;
+//有了LINQ我们也可以用类似的关键词Where实现一句话完成陈述，如下：
+
+static void Main(string[] args)
+{
+  Var books = new BookRepository().GetBooks();
+  var cheapBooks = books.Where(b => b.Price < 10);  //等同于上例中的第一个foreach区块
+
+  foreach (var b in cheapBooks)
+    Console.WriteLine(b.Title + " " + book.Price);
+}
+
+//Where方法即是在LINQ命名空间下的扩展方法(Extension Methods)，派生类Book肯定没有Where这个方法。Where方法的签名中需要传入一个返回值为布尔值的
+  //委托Func<T, bool>即Predict<T>，或具有相同签名的任何方法，即传入book实例返回布尔值的方法。在这里可用匿名方法简写。
+
+//Q: 在SQL中查询语句可以用链式的方式写，LINQ也支持么？
+//A: 支持。如我们要对以上的查找结果排序，则可如下表示：
+
+  var cheapBooks = books.Where(b => b.Price < 10).OrderBy(b = > b.Titel);
+
+//这样就会将价格筛选结果升序排列。OrderBy()或OrderByDesciending()方法中签名须传入一个Func<T, TKey>委托或具有相同签名的方法。
+//Func<T, TKey>指传入一个类，返回这个类具有的一个属性，等同KeySelector<T>，也就是需要一个排序依据，在这里按名字升序排序。
+
+//Q: Linq中是否有SQL中的关键词SELECT和FROM？
+//A: 有，功能相似但不能多选。在Linq中，Select()方法是一个类型转换方法，需要传入一个Func<T, TResult>委托或相同签名的方法，等同Selector<T>，
+  //意思为它将迭代列表所有成员，除了返回所选择的属性(如title)，还会将这些成员转换为属性的类型(string)。如在以上代码中加入Select：
+
+  var cheapBooks = books.Where(b => b.Price < 10).OrderBy(b = > b.Titel).Select(b => b.Title);
+
+//获得的结果为以IEeumerate<string>列表储存的book title. 在实际情况中，匿名方法可能会更复杂，为了方便阅读，我们通常写成：
+
+  var cheapBooks = books
+                    .Where(b => b.Price < 10)
+                    .OrderBy(b = > b.Titel)
+                    .Select(b => b.Title);
+
+//以上为使用扩展方法(Extension Methods)进行查询。
 
