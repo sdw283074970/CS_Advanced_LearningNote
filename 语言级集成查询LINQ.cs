@@ -15,7 +15,7 @@
   
 static void Main(string[] args)
 {
-  Var books = new BookRepository().GetBooks();
+  Var books = new BookRepository().GetBooks();  //返回的是一个IEnumerable<T>列表
   
   var cheapBooks = new List<Book>();
   foreach (var b in books)
@@ -48,15 +48,15 @@ static void Main(string[] args)
   var cheapBooks = books.Where(b => b.Price < 10).OrderBy(b = > b.Titel);
 
 //这样就会将价格筛选结果升序排列。OrderBy()或OrderByDesciending()方法中签名须传入一个Func<T, TKey>委托或具有相同签名的方法。
-//Func<T, TKey>指传入一个类，返回这个类具有的一个属性，等同KeySelector<T>，也就是需要一个排序依据，在这里按名字升序排序。
+//Func<T, TKey>指传入一个类，返回这个类具有的一个属性，也就是需要一个排序依据，在这里按名字升序排序。
 
 //Q: Linq中是否有SQL中的关键词SELECT和FROM？
-//A: 有，功能相似但不能多选。在Linq中，Select()方法是一个类型转换方法，需要传入一个Func<T, TResult>委托或相同签名的方法，等同Selector<T>，
+//A: 有，功能相似但不能多选。在Linq中，Select()方法是一个类型转换方法，需要传入一个Func<T, TResult>委托或相同签名的方法，
   //意思为它将迭代列表所有成员，除了返回所选择的属性(如title)，还会将这些成员转换为属性的类型(string)。如在以上代码中加入Select：
 
   var cheapBooks = books.Where(b => b.Price < 10).OrderBy(b = > b.Titel).Select(b => b.Title);
 
-//获得的结果为以IEeumerate<string>列表储存的book title. 在实际情况中，匿名方法可能会更复杂，为了方便阅读，我们通常写成：
+//获得的结果为以IEeumerable<string>列表储存的book title. 在实际情况中，匿名方法可能会更复杂，为了方便阅读，我们通常写成：
 
   var cheapBooks = books
                     .Where(b => b.Price < 10)
@@ -64,4 +64,27 @@ static void Main(string[] args)
                     .Select(b => b.Title);
 
 //以上为使用扩展方法(Extension Methods)进行查询。
+//我们还能使用SQL风格的查询语句，但是顺序跟原版不太一样，如下：
 
+  var cheapBooks = from b in books
+                    where b < 10
+                    orderBy b.Titel
+                    select b.Title;
+
+//注意这两种写法的区别，SQL风格的语句为全小写。两种方法除了语法不同以外，产生的结果完全一样，具体用哪一种风格全凭个人喜好。
+
+//Q: 除了以上涉及到的扩展方法，还有没有一些其他实用的Linq扩展方法介绍？
+//A: Single()方法。Where()方法返回的是IEnumerable<T>列表，如果只用放回一个对象的话就用Single()方法，使用方法与Where()差不多，都是传入一个签
+  //名为(Book book)、返回值为bool的方法或等价的匿名方法(Predict<T>委托类型)。但是如果查找对象中没有满足匿名方法条件的对象时，控制台会抛出异常。
+  //为了修复这个问题，在不清楚是否有能够匹配的对象的时候，我们使用SingleOrDefault()方法来代替。区别在于，SingleOrDefault()方法在没找到对象的时
+  //候，会返回默认值，默认情况下默认值为null；
+//First()方法，即返回第一个满足条件的对象。同样我们有FirstOrDefault；
+//Skip(n).Take(m)方法，两个连着一起用,指跳过n个满足对象的条目，取其后m个满足对象的条目，并返回为一个IEnumerable<T>列表；
+//Count()方法。返回查询目标的条目总数；
+//Max()方法、Min()方法。返回在泛型次序中较大的/小的那一个数；
+//Sum()方法。返回泛型次序中数值属性的和。
+//Last()方法。返回最后一个满足条件的对象，同样我们有LastOrDefault；
+//Average()方法。返回泛型次序中数值属性的平均值。
+
+//以上就是Linq基础部分。
+//暂时想到这么多，最后更新2017/11/15
