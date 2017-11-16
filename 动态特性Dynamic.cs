@@ -43,3 +43,5 @@ static void Main(string[] args)
   dynamic d = i;  //d在编译时为dynamic，运行时为int
   long l = d;  //因为d在运行时为int，int转换为long时不需要进行升降级操作，同理d也不需要
 }
+
+//暂时想到这么多，最后更新2017/11/16
