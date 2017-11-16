@@ -21,7 +21,7 @@ int? name = null;
 //A: 使用其GetValueOrDefault()方法并重新赋值。
 
 //Q: 可空合并运算符是什么？
-//A: 可空合并运算符(null coalescing operator)用两个问好??表示，类似于if else的简写，为判断可空类型专门设计，举个例子，原写法为：
+//A: 可空合并运算符(null coalescing operator)用两个问号??表示，类似于将if else简写为 ? :，为判断可空类型专门设计，举个例子，原写法为：
 
 static void Main(string[] args)
 {
