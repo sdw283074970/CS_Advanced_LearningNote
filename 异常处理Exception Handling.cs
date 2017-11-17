@@ -85,7 +85,47 @@ static void Main(string[] args)
   }
 }
 
+//此外，还有一种finally块。在很多实际情况中.NET有时候需要访问一些非托管资源(Unmanaged Resources)，即非CLR托管的资源，如文件系统操作、数据库连接、
+  //网络连接等，在访问这些资源后我们需要手动释放清理。任何访问这些非托管资源的类都应该有IDisposable接口。什么是IDisposable接口？
+  //IDisposable接口中只有一个方法Dispose()，即释放分配的资源的方法，我们需要在finally块中调用这个接口来实现资源的释放。以文件系统读取为例：
 
+static void Main(string[] args)
+{
+  StreamReader streamBreader;
+  try
+  {
+    streamReader = new StreamReader(@"c:\file.zip");  //读取路径文件
+    var content = stramReader.ReadToEnd();  //如果这个地方抛出异常，除了执行catch块，还会执行finally块
+  }
+  catch (Exception e)
+  {
+    Console.Writeline("发生了异常");  
+  }
+  finally   //无论是否抛出异常，这个代码块的内容总被执行
+  {
+    if(stramReader != null)
+      streamReader.Dispose();  //执行释放空间方法
+  }
+}
+
+//关于finally代码块，必须知道的是有一种替代的简写，即使用关键词"using"。这个关键词定义了一个使用范围，即当实例对象被销毁或取消后（通过是因为抛出异常）
+  //会自动添加一个finally块并调用Dispose()释放资源，无需手动再写finally块。代码如下：
+
+static void Main(string[] args)
+{
+  try
+  {
+    using(var streamReader = new StreamReader(@"c:\file.zip"))
+    {
+          var content = stramReader.ReadToEnd();
+    }
+  }
+  catch (Exception e)
+  {
+    Console.Writeline("发生了异常");  
+  }
+  //会自动添加finally代码块并调用streaReader.Depose()方法。
+}
 
 
 
