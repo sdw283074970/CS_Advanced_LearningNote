@@ -127,9 +127,58 @@ static void Main(string[] args)
   //会自动添加finally代码块并调用streaReader.Depose()方法。
 }
 
+//Q: 如何定制异常？为什么我们需要定制异常？
+//A: 在很多情况下，一个代码块抛出的异常可能发生在低层，我们可能并不想把这些低层异常暴露给在程序的高层，即不想告诉 Exception 发生了什么，想在它知晓
+  //以前用自己的方式处理异常，即之前说的使用一个新的自定义异常类重新抛出异常，这种情况下我们就需要定制异常。举一个Youtube上传文件失败的异常，我们不想
+  //让 Expection 来处理，看起来乱，而使用自定义 YoutubeExpection 来擦除Exception的异常信息，抛出可读性更强的异常。代码如下：
 
+public class YoutubeException : Exception   //必须基于Exception来派生自定义类
+{
+  //基于Exception原有的构造函数来构造函数
+  public YoutubeException(string message, Exception innerException)
+    :base(message, innerException)
+  {
+  }
+}
 
+public class YoutubeApi
+{
+  public List<Video> GetVideos(string user)
+  {
+    try
+    {
+      //Access Youtube web service
+      //Read ....
+      //Creat ....
+      throw new Exception("Some lower level error");    //手动模拟抛出异常
+    }
+    catch(Exception ex)
+    {
+      throw new YoutubeException("Sorry, uploading failed", ex);    //使用定制异常擦除原Exception异常信息
+    }
+    return new List<Video>();
+  }
+}
 
+static void Main(string[] args)
+{
+  try
+  {
+    var api = new YoutubeApi();
+    var videos = api.GetVideos("sdw");  //这里必定抛出异常
+  }
+  catch(Exception ex)
+  {
+    Console.WriteLine(ex.Message);    //这个时候Exception的message已经被擦除成YoutubeException的异常信息了，
+  }
+}//运行程序，抛出的是擦除后的异常信息。原信息储存在 ex.InnerException 中。
+
+//InnerException是一个很重要的属性，在很多实际情况中，如Entity Framwork，我们通过查看ex的InnerException来获知问题的源头。
+
+//Q: 异常处理的 try&catch 块一般写在哪？
+//A: 一般写程序的入口处，如主函数，事件处理函数，线程入口处。不能在构造函数处使用异常处理，这里并不能处理，反而会抛出新的异常。
+
+//暂时想到这么多，最后更新2017/11/17
 
 
 
