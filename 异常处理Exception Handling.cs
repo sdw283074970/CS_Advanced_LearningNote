@@ -28,14 +28,14 @@ Unhandle Exception: System.DivideByZeroException: Attempted to divide by zero.
   //Exception 的情况，系统会调用终止函数来让整个程序强制结束，即俗称程序崩溃。
 
 //Q: 如何处理异常？
-//A: 使用 try&catch 代码块，即在try的代码块中抛出异常，那么直接执行catch代码块的命令。在catch中，我们可以选择直接抛出异常，给出一些更有实际意义的
-  //报错语句，或把异常作为内部异常，使用一个新的自定义异常类重新抛出异常。继续以以上为例直接抛出异常，不过换个用户友好的表达：
+//A: 使用 try&catch 代码块，即如果在try的代码块中抛出异常，那么直接执行catch代码块的命令。在catch中，我们可以选择直接抛出异常，给出一些更有实际意义
+  //的报错语句，或把异常作为内部异常，使用一个新的自定义异常类重新抛出异常。继续以以上为例直接抛出异常，不过换个用户友好的表达：
 
 static void Main(string[] args)
 {
   try
   {
-    Console.WriteLine(Divide(5, 0));  //打印出5除以0的结果
+    Console.WriteLine(Divide(5, 0));  //打印出5除以0的结果，此处会抛出DivideByZeroException异常
   }
   catch(Exception)
   {
@@ -57,7 +57,7 @@ static void Main(string[] args)
     Console.WriteLine(e.StackTrace);
   }
 
-//除了以上四个常用的属性，此外还有InnerException记录了被插入到这个异常中的其他异常。
+//除了以上四个常用的属性，此外还有InnerException记录了被插入到这个异常中的其他异常，稍后会详细讨论。
 //在某些情况下，一个代码块可能会抛出多种不同的异常，这个时候我们就需要多重catch块来对异常进行匹配，匹配到的第一个catch代码块将被执行，其他catch块
   //将不被执行，并且catch块的顺序必须由具体到泛型，如：
 
@@ -115,7 +115,7 @@ static void Main(string[] args)
 {
   try
   {
-    using(var streamReader = new StreamReader(@"c:\file.zip"))
+    using(var streamReader = new StreamReader(@"c:\file.zip"))    //意为“我现在使用这个实例，并将监视它。如果它不见了，我要自动执行finally块”
     {
           var content = stramReader.ReadToEnd();
     }
