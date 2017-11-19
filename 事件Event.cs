@@ -2,7 +2,7 @@
 
 //Q: 什么是事件？事件有什么用？
 //A: 事件(Event)是对象之间沟通交流的机制，被用来构造松耦合程序结构和拓展功能。
-  //如一个对象VideoEncoder在编码完成后另一个对象MailService就会知道并发送编码完成的Email，这个过程就需要用到事件来实现。
+  //如一个对象VideoEncoder在编码完成后，另一个对象MailService就会知道并发送“编码完成”的Email，这个过程就需要用到事件来实现。
 
 //Q: 事件是怎么工作的？原理是什么？
 //A: 构建一个事件需要用到发布(Publish) - 订阅(Subscribe)体系。即一个对象发布事件，其他任何对这个事件感兴趣的对象订阅这个事件并做出相应反应。
@@ -175,8 +175,8 @@ public delegate void VideoEncodedEventHandler();
 //反之，在需要调用发布者属性才能做出回应的情况下，就需要sender，换句话说就可以使用自带委托简写，是否采用泛型取决于是否需要发送额外信息。
   
 //Q: 如何在订阅者中调用发布者属性？
-//A: 这就涉及到类中的升级(upcasting)和降级(downcasting)的概念。首先，sender定义中为object，即一切对象的基类。作为最大的类，肯定不能通过
-  //sender.xxx来直接调用sender的属性。我们需要对属于object类的sender降级(downcasting)，降为它本身属于的小类，在以上例子中，sender为发布者
+//A: 这就涉及到类中的升级(upcasting)和降级(downcasting)的概念。首先，sender定义中为object，即一切对象的基类。作为最泛的类，肯定不能通过
+  //sender.xxx来直接调用sender的属性。我们需要对属于object类的sender降级(downcasting)，降为它本身属于的具体类，在以上例子中，sender为发布者
   //videoEncoder本身，我们要把它降级为它本来的类，即VideoEncoder类。
 //类的转换可以直接通过()来转换，如：
   
