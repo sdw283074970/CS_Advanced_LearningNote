@@ -96,7 +96,8 @@ private async void Button_Click(object sender, RoutedEventArgs e)
     MessageBox.Show(html.Substring(0,1));   //string类的Substring方法仍然可以正常调用
   }
 
-//这么写的目的是为了更加解释清楚线程控制权的变化。当方法块执行第一句，线程执行到在htmlTask赋值，然后立刻执行第二句；第二句执行时线程返回到
-  //Button_Click，即UI仍然能正常操作；当第二句执行完毕后，控制权才交给第三句并执行MessageBox语句。
+//这么写的目的是为了更加解释清楚线程控制权的变化。当方法块执行第一句，线程执行到在htmlTask赋值，然后立刻执行第二句；第二句首先执行右边的await标记方法，
+  //此时线程回到UI，即UI仍然能正常操作；当带await的方法执行完毕后，线程才来到第二句左边heml，然后才继续执行后面的语句。
+//以上通过异步编程可以达到UI全程响应。
 
 //暂时想到这么多，最后更新2017/11/19
