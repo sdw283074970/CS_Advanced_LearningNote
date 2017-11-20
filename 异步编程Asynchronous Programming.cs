@@ -87,4 +87,16 @@ private async void Button_Click(object sender, RoutedEventArgs e)   //await必�
     MessageBox.Show(html.Substring(0,1));   //string类的Substring方法就可以正常调用
   }
 
+//我们也可以不用直接给调用的方法加上await，取而代之先保存其返回的任务封装状态，然后对这个任务状态标记await，代码如下：
+
+private async void Button_Click(object sender, RoutedEventArgs e) 
+  {
+    var htmlTask = DownloadHtmlTaskAsync("http://mail.qq.com");   //将异步执行任务保存成为任务状态，即Task<string>类型
+    var html = await htmlTask;    //对任务状态标记
+    MessageBox.Show(html.Substring(0,1));   //string类的Substring方法仍然可以正常调用
+  }
+
+//这么写的目的是为了更加解释清楚线程控制权的变化。当方法块执行第一句，线程执行到在htmlTask赋值，然后立刻执行第二句；第二句执行时线程返回到
+  //Button_Click，即UI仍然能正常操作；当第二句执行完毕后，控制权才交给第三句并执行MessageBox语句。
+
 //暂时想到这么多，最后更新2017/11/19
