@@ -1,5 +1,5 @@
 //Q: 什么是委托？
-//A: 委托(Delegate)是一种类，也是Object，属于引用型(Reference type)，可客户定制。
+//A: 委托(Delegate)是一种类，也是Object，属于引用型(Reference type)，可自定义，也有系统自带的委托(如Func和Action)。
 
 //Q: 委托是干什么用的？
 //A: 委托用来调用其它类中方法，或者说它是一种指向具体函数的指针。
